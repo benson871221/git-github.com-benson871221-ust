@@ -1,0 +1,179 @@
+{% extends 'base_site_equipment_management.html' %}
+
+{% block active2 %} 
+active
+{% endblock %}
+
+{% block title %}
+審核預約
+{% endblock %}
+
+{% block content %}
+    <div class='container'>
+        
+        <div class="container" style="margin-top:2%">
+            {% if messages %}
+                <div class="row">
+                    <div class="">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="container shadow-lg p-3 mb-5 bg-white rounded border border-dark border-1">
+            <form action="{% url 'Order_management:generate_rental' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" style="font-size: 25px;margin-left:10%">輸入Email搜尋預約紀錄</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" name="email" placeholder="Email" style="height: 100%" Required>
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="btn btn-primary" type="submit" id="searchBtn" value="搜尋" style="font-size: 25px">
+                    </div>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+            <div class="container shadow-lg p-3 mb-5 bg-white rounded border border-dark border-1">
+                <div class="row" style="margin-top:2%">
+                    <h2 style="text-align: center;">審核 場地 付款</h2>
+                </div>
+                    <table class="table table-hover table-bordered" style="margin-top:2%">
+                        <thead class="table-dark" style="font-size:20px;">
+                            <tr style="text-align: center;">
+                                <th scope="col" style="width:10%">預約編號</th>
+                                <th scope="col" style="width:15%">學校</th>
+                                <th scope="col" style="width:15%">場地名稱</th>
+                                <th scope="col" style="width:15%">租借日期</th>
+                                <th scope="col" style="width:15%">時段</th>
+                                <th scope="col" style="width:15%">應付金額</th>
+                                <th scope="col" style="width:15%">審核</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if rental_site_set %}
+                                {% for i in rental_site_set %}
+                                <tr style="font-size:22px;vertical-align: middle;text-align: center;">
+                                    <td>{{i.id}}</td>
+                                    <td>{{i.school_name}}</td>
+                                    <td>{{i.site_name}}</td>
+                                    <td>{{i.date|date:"Y-m-d"}}</td>
+                                    <td>{{i.start}}:00-{{i.end}}:00</td>
+                                    <td>{{i.total_price}}</td>
+                                    <td>
+                                        <form  action="{% url 'Order_management:status_update_site' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{i.id}}" />
+                                            <input type="submit" class='btn btn-success' value="確認付款" style="font-size: 20px"></input>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                            {% if not rental_site_set %}
+                                <tr>
+                                    <th scope="row" style="text-align: center;"><h3>#</h3></th>
+                                    <td colspan="6" class="table-active" style="text-align: center;"><h3>目前無任何場地租借紀錄</h3></td>
+                                </tr>
+                            {% endif %} 
+                        </tbody>
+                    </table>
+                
+                    <div class="row" style="margin-top:2%">
+                        <h2 style="text-align: center;">審核 器材 付款</h2>
+                    </div>
+                    <table class="table table-hover table-bordered" style="margin-top:2%">
+                    <thead class="table-dark" style="font-size:20px;">
+                        <tr style="text-align: center;">
+                            <th scope="col" style="width:10%">預約編號</th>
+                            <th scope="col" style="width:15%">學校</th>
+                            <th scope="col" style="width:15%">器材名稱</th>
+                            <th scope="col" style="width:15%">租借日期</th>
+                            <th scope="col" style="width:15%">數量</th>
+                            <th scope="col" style="width:15%">應付金額</th>
+                            <th scope="col" style="width:15%">審核</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if rental_equ_set_0 %}
+                            {% for obj in rental_equ_set_0 %}
+                            <tr style="font-size:22px;vertical-align: middle;text-align: center;">
+                                <td>{{obj.id}}</td>
+                                <td>{{obj.school}}</td>
+                                <td>{{obj.name}}</td>
+                                <td>{{obj.date|date:"Y-m-d"}}</td>
+                                <td>{{obj.number}}</td>
+                                <td>{{obj.price}}</td>
+                                <td>
+                                    <form  action="{% url 'Order_management:status_update_equ' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{obj.id}}" />
+                                        <input type="submit" class='btn btn-success'value="確認付款" style="font-size: 20px"></input>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if not rental_equ_set_0 %}
+                            <tr>
+                                <th scope="row" style="text-align: center;"><h3>#</h3></th>
+                                <td colspan="6" class="table-active" style="text-align: center;"><h3>目前無任何器材租借紀錄</h3></td>
+                            </tr>
+                        {% endif %} 
+                    </tbody>
+                    </table>
+                
+                    <div class="row" style="margin-top:2%">
+                        <h2 style="text-align: center;">審核 器材歸還</h2>
+                    </div>
+                    <table class="table table-hover table-bordered" style="margin-top:2%">
+                        <thead class="table-dark" style="font-size:20px;">
+                            <tr style="text-align: center;">
+                                <th scope="col" style="width:10%">預約編號</th>
+                                <th scope="col" style="width:15%">學校</th>
+                                <th scope="col" style="width:15%">器材名稱</th>
+                                <th scope="col" style="width:15%">租借日期</th>
+                                <th scope="col" style="width:15%">數量</th>
+                                <th scope="col" style="width:10%">應付金額</th>
+                                <th scope="col" style="width:10%">狀態</th>
+                                <th scope="col" style="width:10%">審核</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        {% if rental_equ_set_1 %}
+                            {% for obj in rental_equ_set_1 %}
+                            <tr style="font-size:22px;vertical-align: middle;text-align: center;">
+                                <td>{{obj.id}}</td>
+                                <td>{{obj.school}}</td>
+                                <td>{{obj.name}}</td>
+                                <td>{{obj.date|date:"Y-m-d"}}</td>
+                                <td>{{obj.number}}</td>
+                                <td>{{obj.price}}</td>
+                                <td><button type="button" class="btn btn-warning" style="font-size:20px;">尚未歸還</button></td>
+                                <td>
+                                    <form  action="{% url 'Order_management:status_return_equ' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{obj.id}}" />
+                                    <input type="submit" class='btn btn-success'value="確認歸還" style="font-size:20px;margin-top:20%"></input>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if not rental_equ_set_1 %}
+                            <tr>
+                                <th scope="row" style="text-align: center;"><h3>#</h3></th>
+                                <td colspan="7" class="table-active" style="text-align: center;"><h3>目前無任何器材需要歸還</h3></td>
+                            </tr>
+                        {% endif %} 
+                    </tbody>
+                    </table>
+
+{% endblock  %}

@@ -1,0 +1,102 @@
+{% extends 'base_member_management.html' %}
+
+{% block title %}
+會員資料管理
+{% endblock %}
+
+{% block content %}
+    <div class='container'>
+        <div class="row justify-content-center" style="display: flex;   justify-content: center;  align-items: center; ">
+            <form action="{% url 'member_management:email_search_member' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mr-sm-3 mb-2">
+                    輸入會員信箱：<input name="email" type="search" class="light-table-filter" style="width: 300px;"/>
+                </div>
+                <input class="btn btn-primary mb-2" id="searchBtn" type="submit" value="搜尋" ></input>
+            </form>
+
+            {% if messages %}
+            <div class="row">
+            <div class="">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+                </div>
+    
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+        <div class='jumbotron'  style="background-color:#E9E9D8 ; ">
+            <div class="container">
+                <div class="row" style=" margin-bottom : 20px; ">
+                    <div class="col-md-12 text-center">
+                        <h3>會員管理</h3>
+                    </div>
+
+                
+
+                </div>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">身分</th>
+                        <th scope="col">性別</th>
+                        <th scope="col">生日</th>
+                        <th scope="col">電話</th>
+                        <th scope="col">信箱</th>
+                        <th scope="col">刪除</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in member_set %}
+                        <tr>
+                            
+                                <th>{{obj.id}}</th>
+                                <td>{{obj.name}}</td>
+                                <td>{{obj.identity}}</td>
+                                <td>{{obj.sex}}</td>
+                                <td>{{obj.birthday}}</td>
+                                <td>{{obj.tel}}</td>
+                                <td>{{obj.email}}</td>
+                                <form  action="{% url 'member_management:delete_member' %}" method="POST">
+                                    {% csrf_token %}
+                                <td>
+                                    <input type="hidden" name="member_id" value="{{obj.id}}"/>
+                                    <input class="btnstyle1" type="submit" id="{{obj.id}}" value="刪除"/>
+                                </td>    
+                                </form>                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>       
+                    <tbody>
+                        {% for obj in one_member_set %}
+                        <tr>
+                            
+                                <th>{{obj.id}}</th>
+                                <td>{{obj.name}}</td>
+                                <td>{{obj.identity}}</td>
+                                <td>{{obj.sex}}</td>
+                                <td>{{obj.birthday}}</td>
+                                <td>{{obj.tel}}</td>
+                                <td>{{obj.email}}</td>
+                                <form  action="{% url 'member_management:delete_member' %}" method="POST">
+                                    {% csrf_token %}
+                                <td>
+                                    <input type="hidden" name="member_id" value="{{obj.id}}"/>
+                                    <input class="btnstyle1" type="submit" id="{{obj.id}}" value="刪除"/>
+                                </td>    
+                                </form>                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>                  
+                </table>
+            </div>
+        </div>
+
+{% endblock  %}

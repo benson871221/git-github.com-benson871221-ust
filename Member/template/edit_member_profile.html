@@ -1,0 +1,71 @@
+{% extends base_html %}
+
+{% block active_number %} 
+active
+{% endblock %}
+
+
+{% block title %}
+修改會員資料
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="margin-top:5%">
+            <div class="col-4 rounded shadow-lg p-3 mb-5 bg-white border border-dark border-3 rounded-pill" style="text-align:center">
+                <h3 style="text-align: center;">修改會員資料</h3>
+            </div>
+            <div class="col-7 rounded shadow-lg p-3 mb-5 bg-white border border-dark border-3 rounded-pill" style="text-align:center;margin-left:5%">
+                <h3>
+                    修改 <span class="badge bg-warning" style="color:black">其他個人資料</span> 
+                    請至 <span class="badge bg-warning" style="color:black">註冊之學校負責單位</span> 進行修改
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 rounded shadow-lg p-3 mb-5 bg-white border">
+                <img src="/media/member_pictures/test.jpg" class="img-thumbnail" height="80%">
+            </div>
+            <div class="col-7 rounded shadow-lg p-3 mb-5 bg-white border" style="margin-left:5%">
+                <!-- 修改會員成功/失敗Alert BEGIN -->
+                    {% if messages %}
+                        <div class="row">
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}" role="alert">
+                                    <p>{{ message }}</p>
+                                </div>
+                                {% endfor %}
+                        </div>
+                    {% endif %}
+                <!-- 修改會員成功/失敗Alert END -->
+                <form  action="{% url 'member:edit_member_profile' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-4">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label" style="font-size:22px; margin-left:2%">舊密碼</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" style="height:110%" name="old_password" Required>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-4">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label" style="font-size:22px; margin-left:2%">手機</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" style="height:110%" name="cellphone">
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label" style="font-size:22px; margin-left:2%">新密碼</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" style="height:110%" name="new_password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <input class="btn btn-success" type="submit" value="確認修改" style="margin-left:20%;width:50%;height:110%"/>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+        </div>
+    </div>
+{% endblock  %}

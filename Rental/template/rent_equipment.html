@@ -1,0 +1,87 @@
+{% extends 'base_member.html' %}
+
+{% block active2 %} 
+active
+{% endblock %}
+
+{% block title %}
+確認器材預約
+{% endblock %}
+
+{% block content %}
+
+        <!-- 預約器材成功/失敗Alert BEGIN -->
+        <div class="container" style="margin-top:2%">
+            {% if messages %}
+                <div class="row">
+                    <div class="">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <!-- 預約器材成功/失敗Alert END -->
+
+        <!-- 顯示預約器材內容 BEGIN -->
+
+        <div class="container">
+            {% for obj in reserve_equipment %}
+            <div class="row justify-content-md-center rounded shadow-lg p-3 mb-5 bg-white border" style="margin-top:2%">
+                <div class="col col-lg-2"></div>
+                <div class="col-md-auto">
+                    <h1 style="text-align: center;"> 
+                        <span class="badge bg-primary" style="font-size : 30px;">{{obj.name}}</span>
+                         租借內容
+                    </h1>
+                </div>
+                <div class="col col-lg-2"></div>
+
+                <div class="row g-2" style="margin-top:2%">
+                    <div class="col-1"></div>
+                    <div class="col-5 rounded shadow-lg p-3 mb-5 bg-white border">
+                        <img src="/media/{{obj.image}}" class="img-thumbnail">
+                    </div>
+                    <div class="col-5 rounded shadow-lg p-3 mb-5 bg-white border" style="margin-left:2%">
+                        <h2><span class="badge bg-dark">負責單位</span></h2>
+                        <p style="font-size: 30px;">器材管理單位: {{obj.department_id.name}}</p>
+                        <p style="font-size: 30px;">器材管理員: {{obj.department_id.manager}}</p>
+                        <p style="font-size: 30px;">電話: {{obj.department_id.tel}}</p>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col col-lg-1"></div>
+                    <div class="col col-lg-10 justify-content-md-center rounded shadow-lg p-3 mb-5 bg-white border">
+                        <h2><span class="badge bg-danger">租借資訊</span></h2>
+                        <p style="font-size: 30px;">租借名稱: {{obj.name}}</p>
+                        <p style="font-size: 30px;">租借日期: {{search_equipment_date}}</p>
+                        <p style="font-size: 30px;">租借費用: {{total_price}}</p>
+                        <p style="font-size: 30px;">繳費地點: {{obj.department_id.address}}</p>
+                    </div>
+                    <div class="col col-lg-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center ">
+                        {% if not successful_submit %}
+                        <form  action="{% url 'rental:reserve_equipment' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="reserve_equipment_id" value="{{obj.id}}" />
+                            <input class="btn btn-primary" type="submit" value="確定租借" style="font-size : 30px;"/>
+                        </form>
+                        {% endif %}
+                        {% if successful_submit %}
+                        <form  action="{% url 'rental:back_to_search_equipment' %}" method="POST">
+                            {% csrf_token %}
+                            <input class="btn btn-success" type="submit" value="回到器材查詢" style="font-size : 30px;"/>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        <!-- 顯示預約器材內容 END -->
+
+{% endblock  %}

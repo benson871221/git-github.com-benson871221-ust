@@ -1,0 +1,107 @@
+{% extends 'base_site_equipment_management.html' %}
+
+{% block active3 %} 
+active
+{% endblock %}
+
+{% block title %}
+新增場地
+{% endblock %}
+
+{% block content %}
+       
+    <div class="container" style="margin-top:2%">
+        {% if messages %}
+            <div class="row">
+            <div class="">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+                </div>
+
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded border border-dark border-1">
+        <div class="row">
+            <div class="col-md-12 text-center ">
+                <h2 style="margin-top:2%">新增場地</h2>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data"> 
+            {% csrf_token %}   
+            <div class="row" style="margin-top:2%">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size: 22px;">{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size: 22px;">{{ form.usage.label }}</label>
+                        {{ form.usage }}
+                </div> 
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size: 22px;">開始時間</label>
+                    <select class="form-select" name="start" style="font-size: 20px;">
+                        <option value="8">8:00</option>
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                    </select>
+                </div> 
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size: 22px;">結束時間</label>
+                    <select class="form-select" name="end" style="font-size: 20px;">
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
+                    </select>
+                </div> 
+            </div>
+            <div class="row" style="margin-top:2%">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size: 22px;">{{ form.address.label }}</label>
+                    {{ form.address }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size: 22px;">{{ form.location.label }}</label>
+                    {{ form.location }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size: 22px;">{{ form.price.label }}</label>
+                    {{ form.price }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size: 22px;">{{ form.image.label }}</label>
+                    {{ form.image }}
+                </div>
+            </div>
+            <div class="row" style="margin-top:2%;" >
+                <label class="form-label" style="font-size: 22px;">{{ form.rule.label }}</label>
+                {{ form.rule }}
+            </div>
+            <div class="row" style="visibility:hidden">
+                <label class="form-label" >{{ form.department_id.label }}</label>
+                {{ form.department_id }}
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center ">
+                    <input class="btn btn-success" type="submit"  value="確認" style="font-size: 30px;"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock  %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}註冊{% endblock %}
+
+{% block content %}
+
+<h1>註冊</h1>
+<!-- 註冊成功MODAL BEGIN -->
+<div class="modal fade" id="successful_submit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalLongTitle">註冊成功</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="font-size:22px">
+          <p>租借流程說明</p>
+          <p>1. 登入一般使用者帳號</p>
+          <p>2. 選擇租借場地或租借器材</p>
+          <p>3. 篩選租借時間與其他資訊</p>
+          <p>4. 閱讀租借規則</p>
+          <p>5. 確定租借內容</p>
+          <p>6. 完成租借</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+          <a class="btn btn-success" type="button" href="{% url 'member:login' %}">回到登入</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- 註冊成功MODAL END -->
+<div class="container">
+    <div class="row" style="margin-top:2%">
+        {% if messages %}
+            <div class="row">
+            <div class="">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+                </div>
+
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row" style="margin-top:2%">
+    <div class="col-md-5 text-center "></div>
+    <div class="col-md-2 text-center justify-content-md-center rounded shadow-lg p-3 mb-5 bg-white border">
+        <h1><b>註冊</b></h1>
+    </div>
+    <div class="col-md-5 text-center"></div>
+</div>
+<!-- 註冊FORM BEGIN -->
+<div class="row justify-content-md-center rounded shadow-lg p-3 mb-5 bg-white border">
+    <form action="" method="POST" enctype="multipart/form-data" style="font-size:22px">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">{{ form.password.label }}</label>
+                {{ form.password }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">確認密碼</label>
+                <input type="password" name="check_password" class="form-control">
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-md-4">
+                <label class="form-label">{{ form.name.label }}</label>
+                {{ form.name }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">{{ form.school_id.label }}</label>
+                {{ form.school_id }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">{{ form.identity.label }}</label>
+                {{ form.identity }}
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-6 col-md-4">
+                <label class="form-label">{{ form.sex.label }}</label>
+                {{ form.sex }}
+            </div>
+            <div class="col-6 col-md-4">
+                <label class="form-label">{{ form.birthday.label }}</label>
+                {{ form.birthday }}
+            </div>
+            <div class="col-6 col-md-4">
+                <label class="form-label">{{ form.tel.label }}</label>
+                {{ form.tel }}
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-md-12">
+                <label class="form-label">{{ form.image.label }}</label>
+                {{ form.image }}
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-md-12 text-center ">
+                <input class="btn btn-success" type="submit" value="註冊" style="font-size:25px"/>
+                <a class="btn btn-primary" type="button" href="{% url 'member:login' %}" style="font-size:25px;margin-left:10%">回到登入</a>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 註冊FORM END -->
+
+<!-- 註冊成功MODAL BEGIN -->
+{% if successful_submit %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#successful_submit_modal").modal('show');
+        });
+    </script>
+{% endif %}
+<!-- 註冊成功MODAL END -->
+
+{% endblock  %}

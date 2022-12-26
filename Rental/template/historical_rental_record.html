@@ -1,0 +1,176 @@
+{% extends 'base_member.html' %}
+
+{% block active3 %} 
+active
+{% endblock %}
+
+{% block title %}
+歷史租借紀錄
+{% endblock %}
+
+{% block content %}
+    <div class="container border border-dark border-3 shadow-lg p-3 mb-5 bg-white rounded-pill" style="width:20%;margin-top:2%">
+        <h3 style="text-align: center;">歷史場地預約紀錄</h3>
+    </div>
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark" style="font-size:20px;">
+                <tr style="text-align: center;">
+                    <th scope="col" style="width:5%">編號</th>
+                    <th scope="col" style="width:10%">租借日期</th>
+                    <th scope="col" style="width:10%">時段</th>
+                    <th scope="col" style="width:10%">學校</th>
+                    <th scope="col" style="width:10%">場地名稱</th>
+                    <th scope="col" style="width:5%">費用</th>
+                    <th scope="col" style="width:10%">繳費地點</th>
+                    <th scope="col" style="width:8%">詳細資訊</th>
+                    <th scope="col" style="width:8%">狀態</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if member_rent_site %}
+                    {% for obj in member_rent_site %}
+                        <tr style="font-size:20px;vertical-align: middle;">
+                            <th scope="row" style="text-align: center;">{{ obj.id }}</th>
+                            <td style="text-align: center;">{{ obj.date|date:"Y-m-d" }}</td>
+                            <td style="text-align: center;">{{ obj.duration_id.start }}:00-{{ obj.duration_id.end }}:00</td>
+                            <td style="text-align: center;">{{ obj.duration_id.site_id.department_id.school_id.name }}</td>
+                            <td style="text-align: center;">{{ obj.duration_id.site_id.name }}</td>
+                            <td style="text-align: center;">{{ obj.duration_id.site_id.price }}</td>
+                            <td style="text-align: center;">{{ obj.duration_id.site_id.department_id.name }}</td>
+                            <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detail{{obj.id}}"><b>查看</b></button></td>
+                            <td style="text-align: center;"><button type="button" class="btn btn-success"><b>已付款</b></button></td>
+                        </tr>
+                        
+                        <!-- 場地詳細資訊MODAL BEGIN -->
+                            <div class="modal fade" id="detail{{obj.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title" id="exampleModalLongTitle">
+                                        <span class="badge bg-primary">{{ obj.duration_id.site_id.department_id.school_id.name }}</span>
+                                        <span class="badge bg-dark">{{ obj.duration_id.site_id.name }}</span>
+                                    </h1>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3><span class="badge bg-secondary">場地位置資訊</span></h3>
+                                        <h5>所屬學校: {{ obj.duration_id.site_id.department_id.school_id.name }}</h5>
+                                        <h5>位置: {{ obj.duration_id.site_id.address }}</h5>
+                                        <h5>地址: {{ obj.duration_id.site_id.location }}</h5>
+                                        <hr>
+                                        <h3><span class="badge bg-secondary">場地管理資訊</span></h3>
+                                        <h5>管理單位: {{ obj.duration_id.site_id.department_id.name }}</h5>
+                                        <h5>管理員: {{ obj.duration_id.site_id.department_id.manager }}</h5>
+                                        <h5>聯絡電話: {{ obj.duration_id.site_id.department_id.tel }}</h5>
+                                        <hr>
+                                        <h3><span class="badge bg-warning" style="color:black">場地租借資訊</span></h3>
+                                        <h5>租借日期: {{ obj.duration_id.date|date:"Y-m-d" }}</h5>
+                                        <h5>時段: {{ obj.duration_id.start }}:00-{{ obj.duration_id.end }}:00</h5>
+                                        <h5>費用: {{ obj.duration_id.site_id.price }}</h5>
+                                        <h5>繳費地點: {{ obj.duration_id.site_id.department_id.address }}</h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <!-- 場地詳細資訊MODAL END -->
+                    {% endfor %}
+                {% endif %} 
+                {% if not member_rent_site %}
+                    <tr>
+                        <th scope="row" style="text-align: center;"><h3>#</h3></th>
+                        <td colspan="8" class="table-active" style="text-align: center;"><h3>目前無任何租借場地歷史紀錄</h3></td>
+                    </tr>
+                {% endif %} 
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container border border-dark border-3 shadow-lg p-3 mb-5 bg-white rounded-pill" style="width:20%;">
+        <h3 style="text-align: center;">歷史器材預約紀錄</h3>
+    </div>
+
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark" style="font-size:20px;">
+                <tr style="text-align: center;">
+                    <th scope="col" style="width:5%">編號</th>
+                    <th scope="col" style="width:10%">租借日期</th>
+                    <th scope="col" style="width:13%">學校</th>
+                    <th scope="col" style="width:10%">器材名稱</th>
+                    <th scope="col" style="width:5%">數量</th>
+                    <th scope="col" style="width:7%">費用</th>
+                    <th scope="col" style="width:10%">繳費地點</th>
+                    <th scope="col" style="width:8%">詳細資訊</th>
+                    <th scope="col" style="width:8%">預約狀態</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if member_rent_equipment %}
+                    {% for obj in member_rent_equipment %}
+                        <tr style="font-size:20px;vertical-align: middle;">
+                            <th scope="row" style="text-align: center;">{{ obj.id }}</th>
+                            <td style="text-align: center;">{{ obj.date|date:"Y-m-d" }}</td>
+                            <td style="text-align: center;">{{ obj.equipment_id.department_id.school_id.name }}</td>
+                            <td style="text-align: center;">{{ obj.equipment_id.name }}</td>
+                            <td style="text-align: center;">{{ obj.number }}</td>
+                            <td style="text-align: center;">{% widthratio obj.number 1 obj.equipment_id.price %}</td>
+                            <td style="text-align: center;">{{ obj.equipment_id.department_id.name }}</td>
+                            <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detail{{obj.id}}"><b>查看</b></button></td>
+                            <td style="text-align: center;"><button type="button" class="btn btn-success"><b>已歸還</b></button></td>
+                        </tr>
+
+                         <!-- 場地詳細資訊MODAL BEGIN -->
+                         <div class="modal fade" id="detail{{obj.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title" id="exampleModalLongTitle">
+                                    <span class="badge bg-primary">{{ obj.equipment_id.department_id.school_id.name }}</span>
+                                    <span class="badge bg-dark">{{ obj.equipment_id.name }}</span>
+                                </h1>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3><span class="badge bg-secondary">器材管理資訊</span></h3>
+                                    <h5>所屬學校: {{ obj.equipment_id.department_id.school_id.name }}</h5>
+                                    <h5>管理單位: {{ obj.equipment_id.department_id.name }}</h5>
+                                    <h5>管理員: {{ obj.equipment_id.department_id.manager }}</h5>
+                                    <h5>聯絡電話: {{ obj.dequipment_id.department_id.tel }}</h5>
+                                    <hr>
+                                    <h3><span class="badge bg-warning" style="color:black">器材租借資訊</span></h3>
+                                    <h5>租借日期: {{ obj.date|date:"Y-m-d" }}</h5>
+                                    <h5>租借數量: {{ obj.number }}</h5>
+                                    <h5>費用: {% widthratio obj.number 1 obj.equipment_id.price %}</h5>
+                                    <h5>繳費地點: {{ obj.equipment_id.department_id.address }}</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    <!-- 場地詳細資訊MODAL END -->
+                    {% endfor %}
+                {% endif %}
+                {% if not member_rent_equipment %}
+                    <tr>
+                        <th scope="row" style="text-align: center;"><h3>#</h3></th>
+                        <td colspan="8" class="table-active" style="text-align: center;"><h3>目前無任何租借器材歷史紀錄</h3></td>
+                    </tr>
+                {% endif %}  
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+{% endblock  %}
